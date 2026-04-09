@@ -1,0 +1,22 @@
+{
+  "name": "nest-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "npm@9.5.1",
+  "description": "Monorepo for Admin and Web services",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "user_service"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "turbo": "latest"
+  }
+}

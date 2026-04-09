@@ -1,0 +1,2 @@
+/* Import shared styles from the UI package */
+@import "../../../packages/shared-ui/src/styles/shared.css";

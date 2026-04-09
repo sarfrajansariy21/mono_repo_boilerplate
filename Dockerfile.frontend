@@ -1,0 +1,33 @@
+# Stage 1: Build
+FROM node:18-alpine AS builder
+
+ARG APP_NAME
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY apps/$APP_NAME/package*.json ./apps/$APP_NAME/
+COPY packages ./packages
+
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY apps/$APP_NAME ./apps/$APP_NAME
+COPY packages ./packages
+COPY tsconfig.json .eslintrc.base.json turbo.json ./
+
+# Build the specific app
+RUN npx turbo run build --filter=$APP_NAME
+
+# Stage 2: Serving with Nginx
+FROM nginx:stable-alpine
+
+ARG APP_NAME
+# Copy built static files to Nginx
+COPY --from=builder /app/apps/$APP_NAME/dist /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
